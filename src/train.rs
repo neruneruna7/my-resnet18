@@ -1,16 +1,16 @@
 use crate::{
     data::MnistBacher,
-    resnet18::{ResNet18, ResNet18Config},
+    resnet18::ResNet18Config,
 };
 
 use burn::{
     data::{
-        dataloader::{self, DataLoaderBuilder},
+        dataloader::DataLoaderBuilder,
         dataset::vision::MnistDataset,
     },
-    optim::{AdamConfig, decay::WeightDecayConfig},
+    optim::AdamConfig,
     prelude::*,
-    record::{CompactRecorder, NoStdTrainingRecorder},
+    record::CompactRecorder,
     tensor::backend::AutodiffBackend,
     train::{
         LearnerBuilder, MetricEarlyStoppingStrategy, StoppingCondition,

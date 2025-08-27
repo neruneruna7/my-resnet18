@@ -6,7 +6,7 @@ use burn::{
         pool::{AdaptiveAvgPool2d, AdaptiveAvgPool2dConfig, MaxPool2d, MaxPool2dConfig},
     },
     prelude::*,
-    tensor::{BasicAutodiffOps, backend::AutodiffBackend},
+    tensor::backend::AutodiffBackend,
     train::{ClassificationOutput, TrainOutput, TrainStep, ValidStep},
 };
 
