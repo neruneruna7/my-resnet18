@@ -44,9 +44,9 @@ impl<B: Backend> ResNet18<B> {
         // let [batch_size, channel, height, width] = x.dims();
         // let x = x.reshape([batch_size, channel * height * width]);
         let x = x.flatten(1, 3);
-        let x = self.fc.forward(x);
+        
 
-        x
+        self.fc.forward(x)
     }
 
     pub fn forward_classification(&self, batch: MnistBatch<B>) -> ClassificationOutput<B> {
@@ -115,8 +115,8 @@ struct ResNetLayer<B: Backend> {
 impl<B: Backend> ResNetLayer<B> {
     fn forward(&self, x: Tensor<B, 4>) -> Tensor<B, 4> {
         let x = self.blocks[0].forward(x);
-        let x = self.blocks[1].forward(x);
-        x
+        
+        self.blocks[1].forward(x)
     }
 }
 
@@ -167,8 +167,8 @@ impl<B: Backend> BasicBlock<B> {
         let identity = x.clone();
         // ショートカットを先に計算（現在の実装の流れ）
         let shortcut = if let Some(shortcut) = &self.shortcut {
-            let s = shortcut.forward(identity.clone());
-            s
+            
+            shortcut.forward(identity.clone())
         } else {
             identity.clone()
         };
@@ -192,8 +192,8 @@ impl<B: Backend> BasicBlock<B> {
         }
 
         let x = x + shortcut;
-        let x = self.activation.forward(x);
-        x
+        
+        self.activation.forward(x)
     }
 }
 
