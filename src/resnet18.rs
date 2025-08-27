@@ -70,8 +70,6 @@ pub struct ResNet18Config {
     input_channel: usize,
     #[config(default = 1)]
     block_expansion: usize,
-    #[config(default = 0.25)]
-    dropout: f64,
 }
 
 impl ResNet18Config {
