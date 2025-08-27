@@ -17,7 +17,7 @@ pub static ARTIFACT_DIR: &str = "./tmp/burn-resnet18-mnist";
 fn main() {
     let device = WgpuDevice::default();
     let config = MnistTrainingConfig::new(
-        ResNet18Config::new(10, 1, 64),
+        ResNet18Config::new(10, 1),
         AdamConfig::new().with_weight_decay(Some(WeightDecayConfig::new(5e-5))),
     );
     train::run::<Autodiff<Metal>>(ARTIFACT_DIR, config, device);

@@ -12,8 +12,6 @@ use burn::{
 
 use crate::data::MnistBatch;
 
-const NUM_CLASSES: usize = 10;
-
 #[derive(Module, Debug)]
 pub struct ResNet18<B: Backend> {
     // resnet_input: ResNetInput<B>,
@@ -31,10 +29,6 @@ pub struct ResNet18<B: Backend> {
 }
 
 impl<B: Backend> ResNet18<B> {
-    pub fn new(device: &B::Device) -> Self {
-        ResNet18Config::new(NUM_CLASSES, 1, 64).init(device)
-    }
-
     pub fn forward(&self, x: Tensor<B, 4>) -> Tensor<B, 2> {
         let x = self.conv1.forward(x);
         let x = self.bn1.forward(x);
@@ -75,11 +69,8 @@ impl<B: Backend> ResNet18<B> {
 
 #[derive(Config, Debug)]
 pub struct ResNet18Config {
-    #[config(default = 10)]
     num_classes: usize,
-    hidden_size: usize,
     input_channel: usize,
-    inplanes: usize,
     #[config(default = 1)]
     block_expansion: usize,
     #[config(default = 0.25)]
