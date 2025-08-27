@@ -1,0 +1,9 @@
+[package]
+name = "my-resnet18"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+burn = { version = "0.18.0", features = ["metal", "train", "vision", "autotune", "metrics",
+    "std",
+    "fusion",] }
