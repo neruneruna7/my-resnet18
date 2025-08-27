@@ -14,12 +14,10 @@ use crate::data::MnistBatch;
 
 #[derive(Module, Debug)]
 pub struct ResNet18<B: Backend> {
-    // resnet_input: ResNetInput<B>,
     conv1: Conv2d<B>,
     bn1: BatchNorm<B, 2>,
     activation: Relu,
     maxpool: MaxPool2d,
-
     layer1: ResNetLayer<B>,
     layer2: ResNetLayer<B>,
     layer3: ResNetLayer<B>,
@@ -44,7 +42,6 @@ impl<B: Backend> ResNet18<B> {
         // let [batch_size, channel, height, width] = x.dims();
         // let x = x.reshape([batch_size, channel * height * width]);
         let x = x.flatten(1, 3);
-        
 
         self.fc.forward(x)
     }
@@ -115,7 +112,7 @@ struct ResNetLayer<B: Backend> {
 impl<B: Backend> ResNetLayer<B> {
     fn forward(&self, x: Tensor<B, 4>) -> Tensor<B, 4> {
         let x = self.blocks[0].forward(x);
-        
+
         self.blocks[1].forward(x)
     }
 }
@@ -167,7 +164,6 @@ impl<B: Backend> BasicBlock<B> {
         let identity = x.clone();
         // ショートカットを先に計算（現在の実装の流れ）
         let shortcut = if let Some(shortcut) = &self.shortcut {
-            
             shortcut.forward(identity.clone())
         } else {
             identity.clone()
@@ -192,7 +188,7 @@ impl<B: Backend> BasicBlock<B> {
         }
 
         let x = x + shortcut;
-        
+
         self.activation.forward(x)
     }
 }
