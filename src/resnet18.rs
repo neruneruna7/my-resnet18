@@ -159,12 +159,11 @@ struct BasicBlock<B: Backend> {
 impl<B: Backend> BasicBlock<B> {
     fn forward(&self, x: Tensor<B, 4>) -> Tensor<B, 4> {
         // デバッグ: 各経路の形状を出力して不整合箇所を特定する
-        let identity = x.clone();
         // ショートカットを先に計算（現在の実装の流れ）
         let shortcut = if let Some(shortcut) = &self.shortcut {
-            shortcut.forward(identity.clone())
+            shortcut.forward(x.clone())
         } else {
-            identity.clone()
+            x.clone()
         };
 
         // メイン経路
@@ -245,13 +244,15 @@ impl<B: Backend> DownSample<B> {
 struct DownSampleConfig {
     in_planes: usize,
     out_planes: usize,
+    #[config(default = "[1, 1]")]
+    kernel_size: [usize; 2],
     stride: [usize; 2],
 }
 
 impl DownSampleConfig {
     fn init<B: Backend>(&self, device: &B::Device) -> DownSample<B> {
         DownSample {
-            conv: Conv2dConfig::new([self.in_planes, self.out_planes], [1, 1])
+            conv: Conv2dConfig::new([self.in_planes, self.out_planes], self.kernel_size)
                 .with_stride(self.stride)
                 .init(device),
             bn: BatchNormConfig::new(self.out_planes).init(device),
